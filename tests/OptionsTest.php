@@ -3,8 +3,10 @@
 use Spatie\LaravelOptions\Options;
 use Spatie\LaravelOptions\Providers\ArrayProvider;
 use Spatie\LaravelOptions\Providers\NativeEnumProvider;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\LaravelOptions\Tests\Database\Factories\CharacterFactory;
 use Spatie\LaravelOptions\Tests\Fakes\Model\Character;
+use Spatie\LaravelOptions\Tests\Fakes\Model\SelectableCharacter;
 use Spatie\LaravelOptions\Tests\Fakes\NativeEnum\IntEnum;
 use Spatie\LaravelOptions\Tests\Fakes\NativeEnum\StringEnum;
 
@@ -148,5 +150,46 @@ it('can append data using closure', function () {
         ['label' => 'Sam', 'value' => 'sam', 'upper' => 'SAM'],
         ['label' => 'Merry', 'value' => 'merry', 'upper' => 'MERRY'],
         ['label' => 'Pippin', 'value' => 'pippin', 'upper' => 'PIPPIN'],
+    ]);
+});
+
+it('can manually add an extra option', function () {
+    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+        ->push(new SelectOption('Aragon', 'aragon'))
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Frodo', 'value' => 'frodo'],
+        ['label' => 'Sam', 'value' => 'sam'],
+        ['label' => 'Merry', 'value' => 'merry'],
+        ['label' => 'Pippin', 'value' => 'pippin'],
+        ['label' => 'Aragon', 'value' => 'aragon'],
+    ]);
+});
+
+it('will use a selectable interface select option if it exists', function () {
+    Character::factory()->create(['name' => 'Aragon', 'kind' => 'Men']);
+
+    $options = Options::forModels(SelectableCharacter::class)->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Aragon', 'value' => 1, 'kind' => 'Men'],
+    ]);
+});
+
+it('will use a selectable interface select option if it exists and can append more information', function () {
+    Character::factory()->create(['name' => 'Aragon', 'kind' => 'Men']);
+
+    $options = Options::forModels(SelectableCharacter::class)
+        ->append(fn(SelectableCharacter $character) => ['upper_name' => strtoupper($character->name)])
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        [
+            'label' => 'Aragon',
+            'value' => 1,
+            'kind' => 'Men',
+            'upper_name' => 'ARAGON',
+        ],
     ]);
 });

@@ -23,6 +23,7 @@ use Spatie\LaravelOptions\Providers\ModelProvider;
 use Spatie\LaravelOptions\Providers\MyClabsEnumProvider;
 use Spatie\LaravelOptions\Providers\NativeEnumProvider;
 use Spatie\LaravelOptions\Providers\Provider;
+use Spatie\LaravelOptions\Providers\SelectOptionsProvider;
 use Spatie\LaravelOptions\Providers\SpatieEnumProvider;
 use Spatie\LaravelOptions\Providers\SpatieStateProvider;
 use Stringable;
@@ -44,6 +45,8 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
 
     protected ?string $nullableLabel = null;
 
+    protected array $pushedOptions = [];
+
     public static function create(Provider $provider): self
     {
         return new self($provider);
@@ -59,8 +62,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
     public static function forEnum(
         string $enum,
         string|Closure|null $label = 'labels'
-    ): self
-    {
+    ): self {
         return new self(match (true) {
             enum_exists($enum) => new NativeEnumProvider($enum, $label),
             is_subclass_of($enum, SpatieEnum::class) => new SpatieEnumProvider($enum, $label),
@@ -91,6 +93,12 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
         string|Closure|null $label = 'label',
     ): self {
         return new self(new SpatieStateProvider($states, $model, $label));
+    }
+
+    public static function forSelectOptions(
+        array|Collection|SelectOption $options,
+    ): self {
+        return new self(new SelectOptionsProvider($options));
     }
 
     public function __construct(protected readonly Provider $provider)
@@ -140,6 +148,13 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
         return $this;
     }
 
+    public function push(SelectOption ...$options): self
+    {
+        $this->pushedOptions = array_merge($this->pushedOptions, $options);
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->provider
@@ -149,8 +164,8 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
             ->when($this->sort instanceof Closure, fn(Collection $collection) => $collection->sortBy($this->sort))
             ->when($this->unique instanceof Closure, fn(Collection $collection) => $collection->unique($this->sort))
             ->map(function (mixed $item) {
-                $option = $item instanceof SelectOption
-                    ? $item
+                $option = $item instanceof Selectable
+                    ? $item->toSelectOption()
                     : $this->provider->map($item);
 
                 if (is_array($this->append)) {
@@ -166,6 +181,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
             ->when($this->unique === true, fn(Collection $collection) => $collection->unique(
                 fn(SelectOption $option) => $option->value
             ))
+            ->push(...$this->pushedOptions)
             ->when($this->sort === true, fn(Collection $collection) => $collection->sortBy(
                 fn(SelectOption $option) => $option->label
             ))
