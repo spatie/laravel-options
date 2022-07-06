@@ -33,7 +33,7 @@ abstract class EnumProvider implements Provider
             $label = forward_static_call([$item, $this->label])[$value] ?? null;
         }
 
-        return new SelectOption($label ?? $this->mapDefaultLabel($item), $value);
+        return new SelectOption($label ?? ucfirst($this->mapDefaultLabel($item)), $value);
     }
 
     /**
