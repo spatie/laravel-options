@@ -3,6 +3,7 @@
 namespace Spatie\LaravelOptions\Providers;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Spatie\LaravelOptions\Providers\EnumProvider<\MyCLabs\Enum\Enum>
@@ -21,6 +22,6 @@ class MyClabsEnumProvider extends EnumProvider
 
     protected function mapDefaultLabel(mixed $item): string
     {
-        return $item->getKey();
+        return Str::of($item->getKey())->replace('_', ' ')->lower()->ucfirst();
     }
 }
