@@ -26,7 +26,7 @@ use Spatie\LaravelOptions\Providers\SpatieEnumProvider;
 use Spatie\LaravelOptions\Providers\SpatieStateProvider;
 use Stringable;
 
-class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, Stringable
+class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
 {
     protected Closure|bool|null $unique = null;
 
@@ -202,13 +202,6 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
     public function toJson($options = 0)
     {
         return json_encode($this, flags: JSON_THROW_ON_ERROR);
-    }
-
-    public function toHtml(): string
-    {
-        return collect($this->toArray())
-            ->map(fn(string $label, string|int|null $value) => "<option value='{$value}'>{$label}</option>")
-            ->join(PHP_EOL);
     }
 
     public function __toString()
