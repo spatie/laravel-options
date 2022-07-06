@@ -180,7 +180,7 @@ Options::forEnum(Hobbit::class)->nullable('/');
 
 ### With enums
 
-You can create options for native PHP enums, Spatie Enums and MyClabs Enums like this:
+You can create options for native PHP enums, [Spatie Enums](https://github.com/spatie/enum) and [MyClabs Enums](https://github.com/myclabs/php-enum) like this:
 
 ```php
 Options::forEnum(Hobbit::class);
@@ -350,7 +350,7 @@ Options::forSelectableOptions([
 
 ### With states
 
-It is possible to create options from the Spatie model states package like this:
+It is possible to create options from the [Spatie model states](https://github.com/spatie/laravel-model-states) package like this:
 
 ```php
 Options::forStates(RingState::class);
