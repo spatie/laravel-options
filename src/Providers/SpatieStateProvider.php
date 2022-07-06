@@ -30,12 +30,11 @@ class SpatieStateProvider implements Provider
             is_string($this->states) && is_subclass_of($this->states, State::class) => $this->states::all(),
             is_array($this->states) => collect($this->states),
             $this->states instanceof Collection => $this->states,
-            default => throw new TypeError('Invalid states option'),
         };
 
         return collect($states)->map(fn(State|string $state) => $state instanceof State
             ? $state
-            : new $state($this->resolveModel())
+            : $this->resolveState($state)
         );
     }
 
@@ -51,9 +50,12 @@ class SpatieStateProvider implements Provider
         return new SelectOption($label, $item::getMorphClass());
     }
 
-    protected function resolveModel(): Model
+
+    protected function resolveState(string $class): State
     {
-        return $this->model ?? new class () extends Model {
+        $model =  $this->model ?? new class () extends Model {
             };
+
+        return new $class($model);
     }
 }

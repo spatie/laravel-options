@@ -33,10 +33,9 @@ class ModelProvider implements Provider
             is_string($this->models) => $this->models::all(),
             $this->models instanceof Model => collect([$this->models]),
             is_array($this->models) => collect($this->models),
-            $this->models instanceof Collection => $this->models,
             $this->models instanceof EloquentCollection => $this->models->toBase(),
+            $this->models instanceof Collection => $this->models,
             $this->models instanceof EloquentBuilder, $this->models instanceof Relation => $this->models->get(),
-            default => throw new TypeError('Unknown models type')
         };
     }
 

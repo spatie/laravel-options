@@ -15,8 +15,6 @@ interface Provider
 
     /**
      * @param TValue $item
-     *
-     * @return array{label: string, value: string|int|null}
      */
     public function map(mixed $item): SelectOption;
 }

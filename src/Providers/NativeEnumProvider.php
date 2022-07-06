@@ -2,11 +2,12 @@
 
 namespace Spatie\LaravelOptions\Providers;
 
+use BackedEnum;
 use Illuminate\Support\Collection;
 use Spatie\LaravelOptions\SelectOption;
 
 /**
- * @extends  EnumProvider<\StringBackedEnum|\IntBackedEnum>
+ * @extends  EnumProvider<BackedEnum>
  */
 class NativeEnumProvider extends EnumProvider
 {
