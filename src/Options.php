@@ -17,6 +17,7 @@ use MyCLabs\Enum\Enum as MyclabsEnum;
 use Spatie\Enum\Enum as SpatieEnum;
 use Spatie\LaravelOptions\Providers\ArrayProvider;
 use Spatie\LaravelOptions\Providers\AsyncModelProvider;
+use Spatie\LaravelOptions\Providers\EmptyProvider;
 use Spatie\LaravelOptions\Providers\ModelProvider;
 use Spatie\LaravelOptions\Providers\MyClabsEnumProvider;
 use Spatie\LaravelOptions\Providers\NativeEnumProvider;
@@ -102,6 +103,11 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
         array|Collection|SelectOption $options,
     ): self {
         return new self(new SelectOptionsProvider($options));
+    }
+
+    public static function empty(): self
+    {
+        return new self(new EmptyProvider());
     }
 
     public function __construct(protected readonly Provider $provider)

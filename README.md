@@ -419,6 +419,14 @@ Options::forArray([
 
 In this case, the labels and values will be equal.
 
+### Without anything
+
+Lastly, you can create an empty options list like this:
+
+```php
+Options::empty();
+```
+
 ## Testing
 
 ```bash
