@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Spatie\ModelStates\State;
 use Spatie\LaravelOptions\SelectOption;
-use TypeError;
 
 /**
  * @implements Provider<\Spatie\ModelStates\State>

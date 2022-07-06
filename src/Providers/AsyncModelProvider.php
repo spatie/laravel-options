@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Spatie\LaravelOptions\SelectOption;
-use TypeError;
 
 class AsyncModelProvider extends ModelProvider
 {
