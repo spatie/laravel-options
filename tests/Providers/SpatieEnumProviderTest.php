@@ -3,7 +3,6 @@
 namespace Spatie\LaravelOptions\Tests\Providers;
 
 use Spatie\LaravelOptions\Options;
-use Spatie\LaravelOptions\Providers\NativeEnumProvider;
 use Spatie\LaravelOptions\Providers\SpatieEnumProvider;
 use Spatie\LaravelOptions\Tests\Fakes\SpatieEnum\SpatieEnum;
 

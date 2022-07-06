@@ -3,9 +3,7 @@
 namespace Spatie\LaravelOptions\Providers;
 
 use Closure;
-use Illuminate\Support\Collection;
 use Spatie\LaravelOptions\SelectOption;
-use function _PHPStan_59fb0a3b2\React\Promise\reject;
 
 /**
  * @template TValue
@@ -43,12 +41,12 @@ abstract class EnumProvider implements Provider
      *
      * @return string|int
      */
-    protected abstract function mapValue(mixed $item): string|int;
+    abstract protected function mapValue(mixed $item): string|int;
 
     /**
      * @param TValue $item
      *
      * @return string
      */
-    protected abstract function mapDefaultLabel(mixed $item): string;
+    abstract protected function mapDefaultLabel(mixed $item): string;
 }

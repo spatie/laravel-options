@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Database\Eloquent\Factories\Sequence;
-use Illuminate\Support\Facades\DB;
 use Spatie\LaravelOptions\Options;
 use Spatie\LaravelOptions\Providers\ModelProvider;
 use Spatie\LaravelOptions\Tests\Fakes\Model\Character;
 
-beforeEach(fn() => Character::factory()
+beforeEach(fn () => Character::factory()
     ->count(5)
     ->state(new Sequence(
         ['name' => 'Frodo', 'id' => 1],
@@ -77,7 +76,7 @@ it('can create options from an eloquent builder', function () {
     ]);
 });
 
-it('can use another field as label', function (){
+it('can use another field as label', function () {
     $options = Options::create(new ModelProvider(
         Character::first(),
         label: 'kind',
@@ -88,10 +87,10 @@ it('can use another field as label', function (){
     ]);
 });
 
-it('can use a closure as label', function (){
+it('can use a closure as label', function () {
     $options = Options::create(new ModelProvider(
         Character::first(),
-        label: fn(Character $character) => strtoupper($character->name),
+        label: fn (Character $character) => strtoupper($character->name),
     ))->toArray();
 
     expect($options)->toBeArray()->toBe([
@@ -99,7 +98,7 @@ it('can use a closure as label', function (){
     ]);
 });
 
-it('can use another field as value', function (){
+it('can use another field as value', function () {
     $options = Options::create(new ModelProvider(
         Character::first(),
         value: 'kind',
@@ -110,15 +109,13 @@ it('can use another field as value', function (){
     ]);
 });
 
-it('can use a closure as value', function (){
+it('can use a closure as value', function () {
     $options = Options::create(new ModelProvider(
         Character::first(),
-        value: fn(Character $character) => md5($character->name),
+        value: fn (Character $character) => md5($character->name),
     ))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => md5(Character::first()->name)],
     ]);
 });
-
-

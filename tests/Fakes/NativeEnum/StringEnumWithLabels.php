@@ -11,7 +11,7 @@ enum StringEnumWithLabels: string
 
     public static function labels(): array
     {
-       return [
+        return [
            'frodo' => 'Frodo Baggins',
            'sam' => 'Sam Gamgee',
            'merry' => 'Merry Brandybuck',

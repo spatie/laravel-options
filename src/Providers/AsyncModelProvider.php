@@ -3,14 +3,9 @@
 namespace Spatie\LaravelOptions\Providers;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
-use Spatie\LaravelOptions\SelectOption;
-use TypeError;
 
 class AsyncModelProvider extends ModelProvider
 {

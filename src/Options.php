@@ -12,10 +12,8 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
-use JetBrains\PhpStorm\Internal\TentativeType;
 use JsonSerializable;
 use MyCLabs\Enum\Enum as MyclabsEnum;
-use Nette\Utils\Json;
 use Spatie\Enum\Enum as SpatieEnum;
 use Spatie\LaravelOptions\Providers\ArrayProvider;
 use Spatie\LaravelOptions\Providers\AsyncModelProvider;
@@ -27,7 +25,6 @@ use Spatie\LaravelOptions\Providers\SelectOptionsProvider;
 use Spatie\LaravelOptions\Providers\SpatieEnumProvider;
 use Spatie\LaravelOptions\Providers\SpatieStateProvider;
 use Stringable;
-use UnitEnum;
 
 class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, Stringable
 {
@@ -165,10 +162,10 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
     {
         return $this->provider
             ->provide()
-            ->when($this->filter instanceof Closure, fn(Collection $collection) => $collection->filter($this->filter))
-            ->when($this->reject instanceof Closure, fn(Collection $collection) => $collection->reject($this->reject))
-            ->when($this->sort instanceof Closure, fn(Collection $collection) => $collection->sortBy($this->sort))
-            ->when($this->unique instanceof Closure, fn(Collection $collection) => $collection->unique($this->sort))
+            ->when($this->filter instanceof Closure, fn (Collection $collection) => $collection->filter($this->filter))
+            ->when($this->reject instanceof Closure, fn (Collection $collection) => $collection->reject($this->reject))
+            ->when($this->sort instanceof Closure, fn (Collection $collection) => $collection->sortBy($this->sort))
+            ->when($this->unique instanceof Closure, fn (Collection $collection) => $collection->unique($this->sort))
             ->map(function (mixed $item) {
                 $option = $item instanceof Selectable
                     ? $item->toSelectOption()
@@ -184,17 +181,20 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
 
                 return $option;
             })
-            ->when($this->unique === true, fn(Collection $collection) => $collection->unique(
-                fn(SelectOption $option) => $option->value
+            ->when($this->unique === true, fn (Collection $collection) => $collection->unique(
+                fn (SelectOption $option) => $option->value
             ))
             ->push(...$this->pushedOptions)
-            ->when($this->sort === true, fn(Collection $collection) => $collection->sortBy(
-                fn(SelectOption $option) => $option->label
+            ->when($this->sort === true, fn (Collection $collection) => $collection->sortBy(
+                fn (SelectOption $option) => $option->label
             ))
             ->values()
-            ->when($this->nullable, fn(Collection $collection) => $collection->prepend(new SelectOption(
+            ->when(
+                $this->nullable,
+                fn (Collection $collection) => $collection->prepend(new SelectOption(
                 $this->nullableLabel,
-                null))
+                null
+            ))
             )
             ->toArray();
     }
@@ -207,7 +207,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
     public function toHtml(): string
     {
         return collect($this->toArray())
-            ->map(fn(string $label, string|int|null $value) => "<option value='{$value}'>{$label}</option>")
+            ->map(fn (string $label, string|int|null $value) => "<option value='{$value}'>{$label}</option>")
             ->join(PHP_EOL);
     }
 

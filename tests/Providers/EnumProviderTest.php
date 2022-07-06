@@ -18,7 +18,7 @@ it('can create labels from a label function', function () {
 
 
 it('can create labels from a label closure', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class, fn(StringEnum $enum) => $enum->name. ' Hobbit'))->toArray();
+    $options = Options::create(new NativeEnumProvider(StringEnum::class, fn (StringEnum $enum) => $enum->name. ' Hobbit'))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo Hobbit', 'value' => 'frodo'],

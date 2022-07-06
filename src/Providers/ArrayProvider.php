@@ -24,7 +24,7 @@ class ArrayProvider implements Provider
             $items = $items->combine($items);
         }
 
-        return $items->map(fn($label, $value) => [
+        return $items->map(fn ($label, $value) => [
             'label' => $label,
             'value' => $value,
         ]);

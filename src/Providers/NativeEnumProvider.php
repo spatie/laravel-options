@@ -4,7 +4,6 @@ namespace Spatie\LaravelOptions\Providers;
 
 use BackedEnum;
 use Illuminate\Support\Collection;
-use Spatie\LaravelOptions\SelectOption;
 
 /**
  * @extends  EnumProvider<BackedEnum>

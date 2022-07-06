@@ -5,9 +5,8 @@ namespace Spatie\LaravelOptions\Providers;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Spatie\ModelStates\State;
 use Spatie\LaravelOptions\SelectOption;
-use TypeError;
+use Spatie\ModelStates\State;
 
 /**
  * @implements Provider<\Spatie\ModelStates\State>
@@ -32,7 +31,8 @@ class SpatieStateProvider implements Provider
             $this->states instanceof Collection => $this->states,
         };
 
-        return collect($states)->map(fn(State|string $state) => $state instanceof State
+        return collect($states)->map(
+            fn (State|string $state) => $state instanceof State
             ? $state
             : $this->resolveState($state)
         );
@@ -40,7 +40,7 @@ class SpatieStateProvider implements Provider
 
     public function map(mixed $item): SelectOption
     {
-        $label = match (true){
+        $label = match (true) {
             $this->label instanceof Closure => ($this->label)($item),
             $this->label !== null && method_exists($item, $this->label) => call_user_func([$item, $this->label]),
             $this->label !== null && property_exists($item, $this->label) => $item->{$this->label},
@@ -50,11 +50,10 @@ class SpatieStateProvider implements Provider
         return new SelectOption($label, $item::getMorphClass());
     }
 
-
     protected function resolveState(string $class): State
     {
-        $model =  $this->model ?? new class () extends Model {
-            };
+        $model = $this->model ?? new class () extends Model {
+        };
 
         return new $class($model);
     }

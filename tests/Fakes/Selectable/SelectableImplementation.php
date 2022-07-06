@@ -10,8 +10,7 @@ class SelectableImplementation implements Selectable
     public function __construct(
         protected readonly string $label,
         protected readonly string $value,
-    )
-    {
+    ) {
     }
 
     public function toSelectOption(): SelectOption

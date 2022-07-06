@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Spatie\LaravelOptions\SelectOption;
-use TypeError;
 
 /**
  * @implements Provider<Model>
@@ -41,13 +39,13 @@ class ModelProvider implements Provider
 
     public function map(mixed $item): SelectOption
     {
-        $label = match (true){
+        $label = match (true) {
             $this->label === null => $item->name,
             is_string($this->label) => $item->{$this->label},
             $this->label instanceof Closure => ($this->label)($item)
         };
 
-        $value = match (true){
+        $value = match (true) {
             $this->value === null => $item->getKey(),
             is_string($this->value) => $item->{$this->value},
             $this->value instanceof Closure => ($this->value)($item)

@@ -10,9 +10,8 @@ use Spatie\LaravelOptions\Tests\Database\Factories\CharacterFactory;
 
 class SelectableCharacter extends Model implements Selectable
 {
-    protected $table = 'characters';
-
     use HasFactory;
+    protected $table = 'characters';
 
     protected static function newFactory()
     {

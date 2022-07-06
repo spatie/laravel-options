@@ -1,7 +1,6 @@
 <?php
 
 use Spatie\LaravelOptions\Options;
-use Spatie\LaravelOptions\Providers\ArrayProvider;
 use Spatie\LaravelOptions\Providers\SelectOptionsProvider;
 use Spatie\LaravelOptions\SelectOption;
 use Spatie\LaravelOptions\Tests\Fakes\Selectable\SelectableImplementation;
