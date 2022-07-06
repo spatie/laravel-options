@@ -21,7 +21,7 @@ it('will humanize a myclabs enum label by default', function () {
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => 'frodo'],
-        ['label' => 'Sam gamgee', 'value' => 'sam'],
+        ['label' => 'Sam gamgee', 'value' => 'sam gamgee'],
         ['label' => 'Merry', 'value' => 'merry'],
         ['label' => 'Pippin', 'value' => 'pippin'],
     ]);
