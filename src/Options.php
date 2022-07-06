@@ -87,7 +87,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
         return new self(new AsyncModelProvider($models, $label, $value));
     }
 
-    public static function forState(
+    public static function forStates(
         string|array|Collection $states,
         ?Model $model = null,
         string|Closure|null $label = 'label',
@@ -96,6 +96,12 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Htmlable, String
     }
 
     public static function forSelectOptions(
+        array|Collection|SelectOption $options,
+    ): self {
+        return new self(new SelectOptionsProvider($options));
+    }
+
+    public static function forSelectableOptions(
         array|Collection|SelectOption $options,
     ): self {
         return new self(new SelectOptionsProvider($options));

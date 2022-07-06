@@ -12,10 +12,10 @@ enum StringEnumWithLabels: string
     public static function labels(): array
     {
        return [
-           'frodo' => 'Frodo Hobbit',
-           'sam' => 'Sam Hobbit',
-           'merry' => 'Merry Hobbit',
-           'pippin' => 'Pippin Hobbit',
+           'frodo' => 'Frodo Baggins',
+           'sam' => 'Sam Gamgee',
+           'merry' => 'Merry Brandybuck',
+           'pippin' => 'Pippin Took',
        ];
     }
 }
