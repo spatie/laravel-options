@@ -7,7 +7,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-options/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-options/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-options.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-options)
 
-A typical web application always has a number of select fields with options. This package makes it really simple to
+A typical web application always has many select fields with options. This package makes it simple to
 transform enums, models, states and arrays to a unified option structure.
 
 Let's say you have the following enum:
@@ -28,7 +28,7 @@ You can convert this to options like this:
 Options::forEnum(Hobbit::class)->toArray();
 ```
 
-This will return the following array:
+Which will return the following array:
 
 ```php
 [
@@ -105,7 +105,7 @@ Or use a closure to sort the options:
 Options::forEnum(Hobbit::class)->sort(fn(Hobbit $hobbit) => $hobbit->value);
 ```
 
-Additional data can be appended to the options like this:
+You can append additional data to the options like this:
 
 ```php
 Options::forEnum(Hobbit::class)->append(fn(Hobbit $hobbit) => [
@@ -113,7 +113,7 @@ Options::forEnum(Hobbit::class)->append(fn(Hobbit $hobbit) => [
 ]);
 ```
 
-Which will result in the following options array:
+This will result in the following options array:
 
 ```php
 [
@@ -138,7 +138,7 @@ Which will create a smaller options array:
 ]
 ```
 
-Or reject certain options to be included:
+Or reject specific options to be included:
 
 ```php
 Options::forEnum(Hobbit::class)->reject(fn(Hobbit $hobbit) => $hobbit === Hobbit::Frodo);
@@ -154,13 +154,13 @@ Which will create this options array:
 ]
 ```
 
-A special `null` option can be added as such:
+A unique `null` option can be added as such:
 
 ```php
 Options::forEnum(Hobbit::class)->nullable();
 ```
 
-This will add an option with value `null`:
+This will add an option with the value `null`:
 
 ```php
 [
@@ -257,7 +257,7 @@ You can also pass a `Builder` instance:
 Options::forModels(Wizard::query()->where('name', 'gandalf'));
 ```
 
-By default, the key of the model(most of the time `id`) will be taken as value and the `name` field as label.
+By default, the model's key (usually `id`) will be taken as a value and the `name` field as the label.
 
 You can change the value field like this:
 
@@ -271,7 +271,7 @@ Or use a closure for determining the value:
 Options::forModels(Wizard::class, value: fn(Wizard $wizard) => $wizard->uuid());
 ```
 
-The label field can be changed as such:
+You can change the label field as such:
 
 ```php
 Options::forModels(Wizard::class, label: 'full_name');
@@ -285,7 +285,7 @@ Options::forModels(Wizard::class, label: fn(Wizard $wizard) => $wizard->getName(
 
 ### With Select Options
 
-If you're using a certain model options on a lot of places, each time manually defining the label and/or value fields can become quite tedious:
+If you're using options for a model in a lot of places, then each time, manually defining the label and/or value fields can become quite tedious:
 
 ```php
 Options::forModels(
@@ -295,7 +295,7 @@ Options::forModels(
 ); // A lot of times within your code base
 ```
 
-You can implement `Selectable` on a model (or any PHP class) which will automatically convert a model into an option with the correct fields:
+You can implement `Selectable` on a model (or any PHP class), which will automatically convert a model into an option with the correct fields:
 
 ```php
 class Wizard extends Model implements Selectable
@@ -338,7 +338,7 @@ Now the options array will look like this:
 ]
 ```
 
-As said earlier, implementing `Selectable` is not limited to models you can implement it on any PHP class. In such a case you can create options like this:
+As said earlier, implementing `Selectable` is not limited to models. You can implement it on any PHP class. In such a case, you can create options like this:
 
 ```php
 Options::forSelectableOptions([
@@ -356,7 +356,7 @@ It is possible to create options from the Spatie model states package like this:
 Options::forStates(RingState::class);
 ```
 
-You can pass in a model like this (otherwise a temporary model is created):
+You can pass in a model like this (otherwise, a temporary model is created):
 
 ```php
 Options::forStates(RingState::class, $ring);
@@ -383,7 +383,7 @@ class DestroyedRingState extends RingsState
 }
 ```
 
-You can change the name of the method or property which will be used as label as such:
+You can change the name of the method or property which will be used as a label as such:
 
 ```php
 Options::forStates(RingState::class, label: 'ringLabel');
@@ -397,7 +397,7 @@ Options::forStates(RingState::class, label: fn(RingState $state) => $state->labe
 
 ### With Arrays
 
-A set of options can be created from an associative array:
+You can create a set of options from an associative array:
 
 ```php
 Options::forArray([
