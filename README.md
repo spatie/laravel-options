@@ -60,7 +60,7 @@ composer require spatie/laravel-options
 
 ## Usage
 
-You can create an Options object like this (we'll cover other things then enums later on):
+You can create an `Options` object like this (we'll cover other things then enums later on):
 
 ```php
 Options::forEnum(Hobbit::class);
