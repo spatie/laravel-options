@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use JsonSerializable;
 use MyCLabs\Enum\Enum as MyclabsEnum;
 use Spatie\Enum\Enum as SpatieEnum;
@@ -203,6 +205,21 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
                 ))
             )
             ->toArray();
+    }
+
+    /**
+     * @return array<int, string|In>
+     */
+    public function toValidationRule(): array
+    {
+        $rulesArray = [];
+        if ($this->nullable) {
+            $rulesArray[] = 'nullable';
+        }
+
+        $rulesArray[] = Rule::in(array_filter(Arr::pluck($this->toArray(), 'value')));
+
+        return $rulesArray;
     }
 
     public function toJson($options = 0)
