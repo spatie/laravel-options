@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\In;
 use JsonSerializable;
 use MyCLabs\Enum\Enum as MyclabsEnum;
 use Spatie\Enum\Enum as SpatieEnum;
@@ -168,6 +169,41 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
 
     public function toArray(): array
     {
+        return $this->resolveOptions()->toArray();
+    }
+
+    /**
+     * @return array<string|In>
+     */
+    public function toValidationRule(): array
+    {
+        $rulesArray = [Rule::in($this->resolveOptions(enableNullOption: false)->pluck('value'))];
+
+        if ($this->nullable) {
+            $rulesArray[] = 'nullable';
+        }
+
+        return $rulesArray;
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this, flags: JSON_THROW_ON_ERROR);
+    }
+
+    public function __toString()
+    {
+        return json_encode($this, flags: JSON_THROW_ON_ERROR);
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
+    }
+
+    private function resolveOptions(
+        bool $enableNullOption = true,
+    ): Collection {
         return $this->provider
             ->provide()
             ->when($this->filter instanceof Closure, fn(Collection $collection) => $collection->filter($this->filter))
@@ -198,42 +234,11 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
             ))
             ->values()
             ->when(
-                $this->nullable === true,
+                $this->nullable === true && $enableNullOption,
                 fn(Collection $collection) => $collection->prepend(new SelectOption(
                     $this->nullableLabel,
                     null
                 ))
-            )
-            ->toArray();
-    }
-
-    /**
-     * @return array<int, string|In>
-     */
-    public function toValidationRule(): array
-    {
-        $rulesArray = [];
-        if ($this->nullable) {
-            $rulesArray[] = 'nullable';
-        }
-
-        $rulesArray[] = Rule::in(array_filter(Arr::pluck($this->toArray(), 'value')));
-
-        return $rulesArray;
-    }
-
-    public function toJson($options = 0)
-    {
-        return json_encode($this, flags: JSON_THROW_ON_ERROR);
-    }
-
-    public function __toString()
-    {
-        return json_encode($this, flags: JSON_THROW_ON_ERROR);
-    }
-
-    public function jsonSerialize(): mixed
-    {
-        return $this->toArray();
+            );
     }
 }

@@ -429,18 +429,21 @@ Options::empty();
 
 ### Using for validation
 
-For convenience, you can quickly turn the same options you passed to the front end, as a back end validation rule.
-This will account for nullable options too.
+Options, can be converted to a Laravel validation rule:
 
 ```php
-$options = Options::forArray([
-    'gondor' => 'Gondor',
-    'rohan' => 'Rohan',
-    'mordor' => 'Mordor',
-]);
-
 $request->validate([
-    'my_options_input' => $options->toValidationRule()
+    // ['in:frodo,sam,merry,pippin']
+    'hobbit' => Options::forEnum(Hobbit::class)->toValidationRule()
+]); 
+```
+
+When options are nullable, the validation rule automatically will become nullable:
+
+```php
+$request->validate([
+    // ['nullable', 'in:frodo,sam,merry,pippin']
+    'hobbit' => Options::forEnum(Hobbit::class)->nullable()->toValidationRule()
 ]);
 ```
 

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Validation\Rules\In;
 use Spatie\LaravelOptions\Options;
 use Spatie\LaravelOptions\Providers\NativeEnumProvider;
 use Spatie\LaravelOptions\SelectOption;
@@ -9,7 +10,7 @@ use Spatie\LaravelOptions\Tests\Fakes\NativeEnum\StringEnum;
 
 it('can filter options', function () {
     $options = Options::create(new NativeEnumProvider(StringEnum::class))
-        ->filter(fn (StringEnum $enum) => $enum === StringEnum::Frodo)
+        ->filter(fn(StringEnum $enum) => $enum === StringEnum::Frodo)
         ->toArray();
 
     expect($options)->toBeArray()->toBe([
@@ -19,7 +20,7 @@ it('can filter options', function () {
 
 it('can reject options', function () {
     $options = Options::create(new NativeEnumProvider(StringEnum::class))
-        ->reject(fn (StringEnum $enum) => $enum === StringEnum::Frodo)
+        ->reject(fn(StringEnum $enum) => $enum === StringEnum::Frodo)
         ->toArray();
 
     expect($options)->toBeArray()->toBe([
@@ -44,7 +45,7 @@ it('can sort options', function () {
 
 it('can sort options using closure', function () {
     $options = Options::create(new NativeEnumProvider(StringEnum::class))
-        ->sort(fn (StringEnum $enum) => match ($enum) {
+        ->sort(fn(StringEnum $enum) => match ($enum) {
             StringEnum::Frodo => 4,
             StringEnum::Sam => 3,
             StringEnum::Merry => 2,
@@ -81,7 +82,7 @@ it('can create unique options using a closure', function () {
     $model = Character::factory()->create();
 
     $options = Options::forModels([$model, $model])
-        ->unique(fn (Character $character) => $character->getKey())
+        ->unique(fn(Character $character) => $character->getKey())
         ->toArray();
 
     expect($options)->toBeArray()->toBe([
@@ -92,7 +93,7 @@ it('can create unique options using a closure', function () {
 it('can add a null option', function () {
     $options = Options::create(new NativeEnumProvider(StringEnum::class))
         ->nullable()
-        ->sort(fn (StringEnum $enum) => match ($enum) {
+        ->sort(fn(StringEnum $enum) => match ($enum) {
             StringEnum::Frodo => 4,
             StringEnum::Sam => 3,
             StringEnum::Merry => 2,
@@ -139,7 +140,7 @@ it('can append data', function () {
 
 it('can append data using closure', function () {
     $options = Options::create(new NativeEnumProvider(StringEnum::class))
-        ->append(fn (StringEnum $enum) => ['upper' => strtoupper($enum->name)])
+        ->append(fn(StringEnum $enum) => ['upper' => strtoupper($enum->name)])
         ->toArray();
 
     expect($options)->toBeArray()->toBe([
@@ -178,7 +179,7 @@ it('will use a selectable interface select option if it exists and can append mo
     Character::factory()->create(['name' => 'Aragon', 'kind' => 'Men']);
 
     $options = Options::forModels(SelectableCharacter::class)
-        ->append(fn (SelectableCharacter $character) => ['upper_name' => strtoupper($character->name)])
+        ->append(fn(SelectableCharacter $character) => ['upper_name' => strtoupper($character->name)])
         ->toArray();
 
     expect($options)->toBeArray()->toBe([
@@ -192,42 +193,21 @@ it('will use a selectable interface select option if it exists and can append mo
 });
 
 it('can be turned into a laravel validation rule', function () {
-    $rules = Options::create(new NativeEnumProvider(StringEnum::class))
-                    ->toValidationRule();
+    $rules = Options::create(new NativeEnumProvider(StringEnum::class))->toValidationRule();
 
     expect($rules)
         ->toBeArray()
-        ->toHaveCount(1);
-
-    $options = $rules[0];
-    $optionsString = $options->__toString();
-
-    expect($options)->toBeInstanceOf(\Illuminate\Validation\Rules\In::class);
-    expect($optionsString)
-        ->toBeString()
-        ->toBe('in:"frodo","sam","merry","pippin"');
+        ->toHaveCount(1)
+        ->toEqual([new In(['frodo', 'sam', 'merry', 'pippin'])]);
 });
 
 it('can be turned into a laravel validation rule when nullable', function () {
     $rules = Options::create(new NativeEnumProvider(StringEnum::class))
-                    ->nullable()
-                    ->toValidationRule();
+        ->nullable()
+        ->toValidationRule();
 
     expect($rules)
         ->toBeArray()
-        ->toHaveCount(2);
-
-    $nullable = $rules[0];
-
-    expect($nullable)
-        ->toBeString()
-        ->toBe('nullable');
-
-    $options = $rules[1];
-    $optionsString = $options->__toString();
-
-    expect($options)->toBeInstanceOf(\Illuminate\Validation\Rules\In::class);
-    expect($optionsString)
-        ->toBeString()
-        ->toBe('in:"frodo","sam","merry","pippin"');
+        ->toHaveCount(2)
+        ->toEqual([new In(['frodo', 'sam', 'merry', 'pippin']), 'nullable']);
 });
