@@ -9,7 +9,7 @@ use Spatie\LaravelOptions\Tests\Fakes\Model\SelectableCharacter;
 use Spatie\LaravelOptions\Tests\Fakes\NativeEnum\StringEnum;
 
 it('can filter options', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->filter(fn(StringEnum $enum) => $enum === StringEnum::Frodo)
         ->toArray();
 
@@ -19,7 +19,7 @@ it('can filter options', function () {
 });
 
 it('can reject options', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->reject(fn(StringEnum $enum) => $enum === StringEnum::Frodo)
         ->toArray();
 
@@ -31,7 +31,7 @@ it('can reject options', function () {
 });
 
 it('can sort options', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->sort(true)
         ->toArray();
 
@@ -44,7 +44,7 @@ it('can sort options', function () {
 });
 
 it('can sort options using closure', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->sort(fn(StringEnum $enum) => match ($enum) {
             StringEnum::Frodo => 4,
             StringEnum::Sam => 3,
@@ -91,7 +91,7 @@ it('can create unique options using a closure', function () {
 });
 
 it('can add a null option', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->nullable()
         ->sort(fn(StringEnum $enum) => match ($enum) {
             StringEnum::Frodo => 4,
@@ -111,7 +111,7 @@ it('can add a null option', function () {
 });
 
 it('will keep the null option on top when sorting', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->nullable()
         ->sort()
         ->toArray();
@@ -126,7 +126,7 @@ it('will keep the null option on top when sorting', function () {
 });
 
 it('can append data', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->append(['movie' => 'Lord Of The Rings'])
         ->toArray();
 
@@ -139,7 +139,7 @@ it('can append data', function () {
 });
 
 it('can append data using closure', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->append(fn(StringEnum $enum) => ['upper' => strtoupper($enum->name)])
         ->toArray();
 
@@ -152,7 +152,7 @@ it('can append data using closure', function () {
 });
 
 it('can manually add an extra option', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->push(new SelectOption('Aragon', 'aragon'))
         ->toArray();
 
@@ -193,7 +193,7 @@ it('will use a selectable interface select option if it exists and can append mo
 });
 
 it('can be turned into a laravel validation rule', function () {
-    $rules = Options::create(new NativeEnumProvider(StringEnum::class))->toValidationRule();
+    $rules = Options::forProvider(new NativeEnumProvider(StringEnum::class))->toValidationRule();
 
     expect($rules)
         ->toBeArray()
@@ -202,7 +202,7 @@ it('can be turned into a laravel validation rule', function () {
 });
 
 it('can be turned into a laravel validation rule when nullable', function () {
-    $rules = Options::create(new NativeEnumProvider(StringEnum::class))
+    $rules = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->nullable()
         ->toValidationRule();
 

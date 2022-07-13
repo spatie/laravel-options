@@ -17,7 +17,7 @@ beforeEach(fn () => Character::factory()
     ->create());
 
 it('can create options from a model', function () {
-    $options = Options::create(new ModelProvider(Character::first()))->toArray();
+    $options = Options::forProvider(new ModelProvider(Character::first()))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => 1],
@@ -25,7 +25,7 @@ it('can create options from a model', function () {
 });
 
 it('can create options from a model kind', function () {
-    $options = Options::create(new ModelProvider(Character::class))->toArray();
+    $options = Options::forProvider(new ModelProvider(Character::class))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => 1],
@@ -37,7 +37,7 @@ it('can create options from a model kind', function () {
 });
 
 it('can create options from an array of models', function () {
-    $options = Options::create(new ModelProvider([
+    $options = Options::forProvider(new ModelProvider([
         Character::find(1),
         Character::find(2),
     ]))->toArray();
@@ -49,7 +49,7 @@ it('can create options from an array of models', function () {
 });
 
 it('can create options from a collection of models', function () {
-    $options = Options::create(new ModelProvider(collect([
+    $options = Options::forProvider(new ModelProvider(collect([
         Character::find(1),
         Character::find(2),
     ])))->toArray();
@@ -61,7 +61,7 @@ it('can create options from a collection of models', function () {
 });
 
 it('can create options from an eloquent collection of models', function () {
-    $options = Options::create(new ModelProvider(Character::query()->where('kind', 'men')->get()))->toArray();
+    $options = Options::forProvider(new ModelProvider(Character::query()->where('kind', 'men')->get()))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Aragon', 'value' => 5],
@@ -69,7 +69,7 @@ it('can create options from an eloquent collection of models', function () {
 });
 
 it('can create options from an eloquent builder', function () {
-    $options = Options::create(new ModelProvider(Character::query()->where('kind', 'men')))->toArray();
+    $options = Options::forProvider(new ModelProvider(Character::query()->where('kind', 'men')))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Aragon', 'value' => 5],
@@ -77,7 +77,7 @@ it('can create options from an eloquent builder', function () {
 });
 
 it('can use another field as label', function () {
-    $options = Options::create(new ModelProvider(
+    $options = Options::forProvider(new ModelProvider(
         Character::first(),
         label: 'kind',
     ))->toArray();
@@ -88,7 +88,7 @@ it('can use another field as label', function () {
 });
 
 it('can use a closure as label', function () {
-    $options = Options::create(new ModelProvider(
+    $options = Options::forProvider(new ModelProvider(
         Character::first(),
         label: fn (Character $character) => strtoupper($character->name),
     ))->toArray();
@@ -99,7 +99,7 @@ it('can use a closure as label', function () {
 });
 
 it('can use another field as value', function () {
-    $options = Options::create(new ModelProvider(
+    $options = Options::forProvider(new ModelProvider(
         Character::first(),
         value: 'kind',
     ))->toArray();
@@ -110,7 +110,7 @@ it('can use another field as value', function () {
 });
 
 it('can use a closure as value', function () {
-    $options = Options::create(new ModelProvider(
+    $options = Options::forProvider(new ModelProvider(
         Character::first(),
         value: fn (Character $character) => md5($character->name),
     ))->toArray();

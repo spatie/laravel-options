@@ -48,7 +48,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
 
     protected array $pushedOptions = [];
 
-    public static function create(Provider $provider): self
+    public static function forProvider(Provider $provider): self
     {
         return new self($provider);
     }

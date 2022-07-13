@@ -8,7 +8,7 @@ use Spatie\LaravelOptions\Tests\Fakes\NativeEnum\IntEnum;
 use Spatie\LaravelOptions\Tests\Fakes\NativeEnum\StringEnum;
 
 it('can create options from a string backed enum', function () {
-    $options = Options::create(new NativeEnumProvider(StringEnum::class))->toArray();
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => 'frodo'],
@@ -19,7 +19,7 @@ it('can create options from a string backed enum', function () {
 });
 
 it('can create options from an int backed enum', function () {
-    $options = Options::create(new NativeEnumProvider(IntEnum::class))->toArray();
+    $options = Options::forProvider(new NativeEnumProvider(IntEnum::class))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'One', 'value' => 1],

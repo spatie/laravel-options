@@ -4,7 +4,7 @@ use Spatie\LaravelOptions\Options;
 use Spatie\LaravelOptions\Providers\ArrayProvider;
 
 it('can create options from an array', function () {
-    $options = Options::create(new ArrayProvider([
+    $options = Options::forProvider(new ArrayProvider([
         'frodo' => 'Frodo',
         'sam' => 'Sam',
         'merry' => 'Merry',
@@ -20,7 +20,7 @@ it('can create options from an array', function () {
 });
 
 it('can create options from an array without keys', function () {
-    $options = Options::create(new ArrayProvider([
+    $options = Options::forProvider(new ArrayProvider([
         'Frodo',
         'Sam',
         'Merry',

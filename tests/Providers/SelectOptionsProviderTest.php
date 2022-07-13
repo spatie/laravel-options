@@ -6,7 +6,7 @@ use Spatie\LaravelOptions\SelectOption;
 use Spatie\LaravelOptions\Tests\Fakes\Selectable\SelectableImplementation;
 
 it('can create options from a select option', function () {
-    $options = Options::create(new SelectOptionsProvider(new SelectOption('Frodo', 'frodo')))->toArray();
+    $options = Options::forProvider(new SelectOptionsProvider(new SelectOption('Frodo', 'frodo')))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => 'frodo'],
@@ -14,7 +14,7 @@ it('can create options from a select option', function () {
 });
 
 it('can create options from an array of select options', function () {
-    $options = Options::create(new SelectOptionsProvider([
+    $options = Options::forProvider(new SelectOptionsProvider([
         new SelectOption('Frodo', 'frodo'),
         new SelectOption('Sam', 'sam'),
         new SelectOption('Merry', 'merry'),
@@ -30,7 +30,7 @@ it('can create options from an array of select options', function () {
 });
 
 it('can create options from an collection of select options', function () {
-    $options = Options::create(new SelectOptionsProvider(collect([
+    $options = Options::forProvider(new SelectOptionsProvider(collect([
         new SelectOption('Frodo', 'frodo'),
         new SelectOption('Sam', 'sam'),
         new SelectOption('Merry', 'merry'),
@@ -46,7 +46,7 @@ it('can create options from an collection of select options', function () {
 });
 
 it('can create options from a selectable', function () {
-    $options = Options::create(new SelectOptionsProvider(new SelectableImplementation('Frodo', 'frodo')))->toArray();
+    $options = Options::forProvider(new SelectOptionsProvider(new SelectableImplementation('Frodo', 'frodo')))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'Frodo', 'value' => 'frodo'],
@@ -54,7 +54,7 @@ it('can create options from a selectable', function () {
 });
 
 it('can create options from a selectable array', function () {
-    $options = Options::create(new SelectOptionsProvider([
+    $options = Options::forProvider(new SelectOptionsProvider([
         new SelectableImplementation('Frodo', 'frodo'),
         new SelectableImplementation('Sam', 'sam'),
         new SelectableImplementation('Merry', 'merry'),
@@ -70,7 +70,7 @@ it('can create options from a selectable array', function () {
 });
 
 it('can create options from a selectable collection', function () {
-    $options = Options::create(new SelectOptionsProvider(collect([
+    $options = Options::forProvider(new SelectOptionsProvider(collect([
         new SelectableImplementation('Frodo', 'frodo'),
         new SelectableImplementation('Sam', 'sam'),
         new SelectableImplementation('Merry', 'merry'),

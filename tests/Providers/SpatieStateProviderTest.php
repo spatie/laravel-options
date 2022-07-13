@@ -10,7 +10,7 @@ use Spatie\LaravelOptions\Tests\Fakes\SpatieState\SamState;
 use Spatie\LaravelOptions\Tests\Fakes\SpatieState\SpatieState;
 
 it('can create options from a spatie state', function () {
-    $options = Options::create(new SpatieStateProvider(SpatieState::class, label: null))->toArray();
+    $options = Options::forProvider(new SpatieStateProvider(SpatieState::class, label: null))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'aragon', 'value' => 'aragon'],
@@ -22,7 +22,7 @@ it('can create options from a spatie state', function () {
 });
 
 it('can create options from a spatie state using a label field', function () {
-    $options = Options::create(new SpatieStateProvider(SpatieState::class, label: 'label'))->toArray();
+    $options = Options::forProvider(new SpatieStateProvider(SpatieState::class, label: 'label'))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'aragon', 'value' => 'aragon'],
@@ -34,7 +34,7 @@ it('can create options from a spatie state using a label field', function () {
 });
 
 it('can create options from a spatie state using a different label method', function () {
-    $options = Options::create(new SpatieStateProvider(SpatieState::class, label: 'characterLabel'))->toArray();
+    $options = Options::forProvider(new SpatieStateProvider(SpatieState::class, label: 'characterLabel'))->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => 'aragon', 'value' => 'aragon'],
@@ -46,7 +46,7 @@ it('can create options from a spatie state using a different label method', func
 });
 
 it('can create options from a spatie state using a closure', function () {
-    $options = Options::create(new SpatieStateProvider(
+    $options = Options::forProvider(new SpatieStateProvider(
         SpatieState::class,
         label: fn (SpatieState $state) => Str::of($state::class)->after('Spatie\LaravelOptions\Tests\Fakes\SpatieState\\')->before('State')
     ))->toArray();
