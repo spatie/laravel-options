@@ -190,3 +190,44 @@ it('will use a selectable interface select option if it exists and can append mo
         ],
     ]);
 });
+
+it('can be turned into a laravel validation rule', function () {
+    $rules = Options::create(new NativeEnumProvider(StringEnum::class))
+                    ->toValidationRule();
+
+    expect($rules)
+        ->toBeArray()
+        ->toHaveCount(1);
+
+    $options = $rules[0];
+    $optionsString = $options->__toString();
+
+    expect($options)->toBeInstanceOf(\Illuminate\Validation\Rules\In::class);
+    expect($optionsString)
+        ->toBeString()
+        ->toBe('in:"frodo","sam","merry","pippin"');
+});
+
+it('can be turned into a laravel validation rule when nullable', function () {
+    $rules = Options::create(new NativeEnumProvider(StringEnum::class))
+                    ->nullable()
+                    ->toValidationRule();
+
+    expect($rules)
+        ->toBeArray()
+        ->toHaveCount(2);
+
+    $nullable = $rules[0];
+
+    expect($nullable)
+        ->toBeString()
+        ->toBe('nullable');
+
+    $options = $rules[1];
+    $optionsString = $options->__toString();
+
+    expect($options)->toBeInstanceOf(\Illuminate\Validation\Rules\In::class);
+    expect($optionsString)
+        ->toBeString()
+        ->toBe('in:"frodo","sam","merry","pippin"');
+});

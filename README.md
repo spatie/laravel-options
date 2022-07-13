@@ -427,6 +427,23 @@ Lastly, you can create an empty options list like this:
 Options::empty();
 ```
 
+### Using for validation
+
+For convenience, you can quickly turn the same options you passed to the front end, as a back end validation rule.
+This will account for nullable options too.
+
+```php
+$options = Options::forArray([
+    'gondor' => 'Gondor',
+    'rohan' => 'Rohan',
+    'mordor' => 'Mordor',
+]);
+
+$request->validate([
+    'my_options_input' => $options->toValidationRule()
+]);
+```
+
 ## Testing
 
 ```bash
