@@ -212,7 +212,7 @@ it('can be turned into a laravel validation rule when nullable', function () {
         ->toEqual([new In(['frodo', 'sam', 'merry', 'pippin']), 'nullable']);
 });
 
-it('can use custom label and value keys', function () {
+it('can use custom keys', function () {
     config([
         'options.label_key' => 'name',
         'options.value_key' => 'id',
