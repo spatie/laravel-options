@@ -25,14 +25,14 @@ class ArrayProvider implements Provider
         }
 
         return $items->map(fn ($label, $value) => [
-            'label' => $label,
-            'value' => $value,
+            config('options.label_key') => $label,
+            config('options.value_key') => $value,
         ]);
     }
 
     public function map(mixed $item): SelectOption
     {
-        ['label' => $label, 'value' => $value] = $item;
+        [config('options.label_key') => $label, config('options.value_key') => $value] = $item;
 
         return new SelectOption($label, $value);
     }
