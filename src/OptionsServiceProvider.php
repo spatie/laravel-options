@@ -9,6 +9,7 @@ class OptionsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package->name('options');
+        $package->name('options')
+            ->hasConfigFile();
     }
 }

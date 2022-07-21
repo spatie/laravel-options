@@ -19,8 +19,8 @@ class SelectOption implements Arrayable, Jsonable
     public function toArray(): array
     {
         return array_merge([
-            'label' => $this->label,
-            'value' => $this->value,
+            config('options.label_key') => $this->label,
+            config('options.value_key') => $this->value,
         ], $this->extra);
     }
 
