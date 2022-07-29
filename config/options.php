@@ -1,15 +1,13 @@
 <?php
 
 return [
-
     /*
-     * By default the when serializing an option to an array
-     * the key `label` is used for the instance's label
-     * and the key `value` for the instance's value
-     *
-     * You can customize these keys here.
+     * The key used in an option to describe the label of the option
      */
     'label_key' => 'label',
-    'value_key' => 'value',
 
+    /*
+     * The key used in an option to describe the value of the option
+     */
+    'value_key' => 'value',
 ];

@@ -57,6 +57,27 @@ You can install the package via composer:
 ```bash
 composer require spatie/laravel-options
 ```
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="options"
+```
+
+This is the contents of the published config file:
+
+```php
+return [
+    /*
+     * The key used in an option to describe the label of the option
+     */
+    'label_key' => 'label',
+
+    /*
+     * The key used in an option to describe the value of the option
+     */
+    'value_key' => 'value',
+];
+```
 
 ## Usage
 
@@ -176,6 +197,33 @@ The label of the `null` option can be changed as such:
 
 ```php
 Options::forEnum(Hobbit::class)->nullable('/');
+```
+
+It is possible to change the keys used in options by changing the `options.php` config file. For example:
+
+```php
+return [
+    /*
+     * The key used in an option to describe the label of the option
+     */
+    'label_key' => 'name',
+
+    /*
+     * The key used in an option to describe the value of the option
+     */
+    'value_key' => 'id',
+];
+```
+
+Will result in the following options:
+
+```php
+[
+    ['name' => 'Frodo', 'id' => 'frodo'],
+    ['name' => 'Sam', 'id' => 'sam'],
+    ['name' => 'Merry', 'id' => 'merry'],
+    ['name' => 'Pippin', 'id' => 'pippin'],
+]
 ```
 
 ### With enums
