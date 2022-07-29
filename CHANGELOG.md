@@ -2,6 +2,10 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.0.3 - 2022-07-29
+
+- allow to customize label and value array keys (#3)
+
 ## 1.0.2 - 2022-07-13
 
 - rename `create` to `forProvider`
