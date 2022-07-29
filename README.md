@@ -60,7 +60,7 @@ composer require spatie/laravel-options
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="options"
+php artisan vendor:publish --tag="options-config"
 ```
 
 This is the contents of the published config file:
