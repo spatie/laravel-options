@@ -211,3 +211,20 @@ it('can be turned into a laravel validation rule when nullable', function () {
         ->toHaveCount(2)
         ->toEqual([new In(['frodo', 'sam', 'merry', 'pippin']), 'nullable']);
 });
+
+it('can use custom keys', function () {
+    config([
+        'options.label_key' => 'name',
+        'options.value_key' => 'id',
+    ]);
+
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['name' => 'Frodo', 'id' => 'frodo'],
+        ['name' => 'Sam', 'id' => 'sam'],
+        ['name' => 'Merry', 'id' => 'merry'],
+        ['name' => 'Pippin', 'id' => 'pippin'],
+    ]);
+});

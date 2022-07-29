@@ -34,3 +34,20 @@ it('can create options from an array without keys', function () {
         ['label' => 'Pippin', 'value' => 'Pippin'],
     ]);
 });
+
+it('can map options from an array with custom keys', function () {
+    config([
+        'options.label_key' => 'name',
+        'options.value_key' => 'id',
+    ]);
+
+    $option = (new ArrayProvider([]))->map([
+        'name' => 'Frodo',
+        'id' => 'frodo',
+    ]);
+
+    expect($option->toArray())->toBeArray()->toBe([
+        'name' => 'Frodo',
+        'id' => 'frodo',
+    ]);
+});
