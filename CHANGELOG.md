@@ -2,6 +2,19 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.0.4 - 2023-02-02
+
+### What's Changed
+
+- Fix vendor:publish command by @rodrigopedra in https://github.com/spatie/laravel-options/pull/4
+- Laravel 10.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-options/pull/12
+
+### New Contributors
+
+- @laravel-shift made their first contribution in https://github.com/spatie/laravel-options/pull/12
+
+**Full Changelog**: https://github.com/spatie/laravel-options/compare/1.0.3...1.0.4
+
 ## 1.0.3 - 2022-07-29
 
 - allow to customize label and value array keys (#3)
