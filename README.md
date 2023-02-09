@@ -194,7 +194,13 @@ This will add an option with the value `null`:
 The label of the `null` option can be changed as such:
 
 ```php
-Options::forEnum(Hobbit::class)->nullable('/');
+Options::forEnum(Hobbit::class)->nullable('Gandalf');
+```
+
+Another value for null can be set as follows:
+
+```php
+Options::forEnum(Hobbit::class)->nullable(label: 'Gandalf', value: 'You Shall Not Pass');
 ```
 
 It is possible to change the keys used in options by changing the `options.php` config file. For example:
@@ -491,6 +497,16 @@ $request->validate([
     // ['nullable', 'in:frodo,sam,merry,pippin']
     'hobbit' => Options::forEnum(Hobbit::class)->nullable()->toValidationRule()
 ]);
+```
+
+### Iterating
+
+It is possible to iterator over a set of options:
+
+```php
+foreach(Options::forEnum(Hobbit::class) as $option){
+    echo "<option value={$option['value']}>{$option['label']}</option>";
+}
 ```
 
 ## Testing
