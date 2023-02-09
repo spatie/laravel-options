@@ -93,20 +93,28 @@ it('can create unique options using a closure', function () {
 it('can add a null option', function () {
     $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
         ->nullable()
-        ->sort(fn(StringEnum $enum) => match ($enum) {
-            StringEnum::Frodo => 4,
-            StringEnum::Sam => 3,
-            StringEnum::Merry => 2,
-            StringEnum::Pippin => 1,
-        })
         ->toArray();
 
     expect($options)->toBeArray()->toBe([
         ['label' => '-', 'value' => null],
-        ['label' => 'Pippin', 'value' => 'pippin'],
-        ['label' => 'Merry', 'value' => 'merry'],
-        ['label' => 'Sam', 'value' => 'sam'],
         ['label' => 'Frodo', 'value' => 'frodo'],
+        ['label' => 'Sam', 'value' => 'sam'],
+        ['label' => 'Merry', 'value' => 'merry'],
+        ['label' => 'Pippin', 'value' => 'pippin'],
+    ]);
+});
+
+it('can add a null option with specific label and value', function () {
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
+        ->nullable(label: 'Gandalf', value: 'You shall not pass')
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Gandalf', 'value' => 'You shall not pass'],
+        ['label' => 'Frodo', 'value' => 'frodo'],
+        ['label' => 'Sam', 'value' => 'sam'],
+        ['label' => 'Merry', 'value' => 'merry'],
+        ['label' => 'Pippin', 'value' => 'pippin'],
     ]);
 });
 
@@ -227,4 +235,16 @@ it('can use custom keys', function () {
         ['name' => 'Merry', 'id' => 'merry'],
         ['name' => 'Pippin', 'id' => 'pippin'],
     ]);
+});
+
+it('can iterate over options', function () {
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class));
+
+    $labels = [];
+
+    foreach ($options as $option) {
+        $labels[] = $option['label'];
+    }
+
+    expect($labels)->toBe(['Frodo', 'Sam', 'Merry', 'Pippin']);
 });

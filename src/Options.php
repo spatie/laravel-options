@@ -2,6 +2,7 @@
 
 namespace Spatie\LaravelOptions;
 
+use ArrayIterator;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
+use IteratorAggregate;
 use JsonSerializable;
 use MyCLabs\Enum\Enum as MyclabsEnum;
 use Spatie\Enum\Enum as SpatieEnum;
@@ -27,8 +29,9 @@ use Spatie\LaravelOptions\Providers\SelectOptionsProvider;
 use Spatie\LaravelOptions\Providers\SpatieEnumProvider;
 use Spatie\LaravelOptions\Providers\SpatieStateProvider;
 use Stringable;
+use Traversable;
 
-class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
+class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, IteratorAggregate
 {
     protected Closure|bool|null $unique = null;
 
@@ -43,6 +46,8 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
     protected Closure|array|null $append = null;
 
     protected ?string $nullableLabel = '-';
+
+    protected mixed $nullableValue = null;
 
     protected array $pushedOptions = [];
 
@@ -150,9 +155,14 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
         return $this;
     }
 
-    public function nullable(string $label = '-', bool $nullable = true): self
+    public function nullable(
+        string $label = '-',
+        bool $nullable = true,
+        mixed $value = null,
+    ): self
     {
         $this->nullableLabel = $label;
+        $this->nullableValue = $value;
         $this->nullable = $nullable;
 
         return $this;
@@ -199,6 +209,11 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
         return $this->toArray();
     }
 
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->toArray());
+    }
+
     private function resolveOptions(
         bool $enableNullOption = true,
     ): Collection {
@@ -235,7 +250,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable
                 $this->nullable === true && $enableNullOption,
                 fn(Collection $collection) => $collection->prepend(new SelectOption(
                     $this->nullableLabel,
-                    null
+                    $this->nullableValue
                 ))
             );
     }
