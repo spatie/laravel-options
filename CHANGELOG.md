@@ -2,6 +2,11 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.1.0 - 2023-02-09
+
+- Add support for a nullable value
+- Add support for iterating over options
+
 ## 1.0.4 - 2023-02-02
 
 ### What's Changed
