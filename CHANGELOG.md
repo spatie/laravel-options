@@ -2,6 +2,14 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.1.1 - 2024-02-27
+
+### What's Changed
+
+* Laravel 11.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-options/pull/16
+
+**Full Changelog**: https://github.com/spatie/laravel-options/compare/1.1.0...1.1.1
+
 ## 1.1.0 - 2023-02-09
 
 - Add support for a nullable value
