@@ -2,6 +2,14 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.1.2 - 2025-02-21
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-options/pull/17
+
+**Full Changelog**: https://github.com/spatie/laravel-options/compare/1.1.1...1.1.2
+
 ## 1.1.1 - 2024-02-27
 
 ### What's Changed
