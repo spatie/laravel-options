@@ -2,6 +2,13 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.2.0 - 2025-06-17
+
+- Some cleanup of the code
+- Add support for only and except
+
+If you're implementing your own `Provider` which is technically possible but not documented (and thus we allow ourselves to make braking changes here), add the `equals` method since it is now required.
+
 ## 1.1.2 - 2025-02-21
 
 ### What's Changed
