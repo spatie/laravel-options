@@ -84,3 +84,29 @@ it('can create options from a selectable collection', function () {
         ['label' => 'Pippin', 'value' => 'pippin'],
     ]);
 });
+
+it('can use only and except on select options', function () {
+    $providedOptions = [
+        new SelectOption('Frodo', 'frodo'),
+        new SelectOption('Sam', 'sam'),
+        new SelectOption('Merry', 'merry'),
+        new SelectOption('Pippin', 'pippin'),
+    ];
+    $options = Options::forProvider(new SelectOptionsProvider($providedOptions))
+        ->only('frodo', 'sam')
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Frodo', 'value' => 'frodo'],
+        ['label' => 'Sam', 'value' => 'sam'],
+    ]);
+
+    $options = Options::forProvider(new SelectOptionsProvider($providedOptions))
+        ->except('frodo', 'sam')
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Merry', 'value' => 'merry'],
+        ['label' => 'Pippin', 'value' => 'pippin'],
+    ]);
+});

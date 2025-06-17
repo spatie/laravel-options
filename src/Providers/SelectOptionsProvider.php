@@ -32,4 +32,13 @@ class SelectOptionsProvider implements Provider
     {
         return $item;
     }
+
+    /**
+     * @param SelectOption $provided
+     * @param string $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return $provided->value === $userDefined;
+    }
 }

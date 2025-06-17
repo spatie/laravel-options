@@ -27,3 +27,23 @@ it('can create options from an int backed enum', function () {
         ['label' => 'Three', 'value' => 3],
     ]);
 });
+
+it('can use only and except on backed enums', function () {
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
+        ->only(StringEnum::Sam, StringEnum::Frodo)
+        ->toArray();
+
+    expect($options)->toEqual([
+        ['label' => 'Frodo', 'value' => 'frodo'],
+        ['label' => 'Sam', 'value' => 'sam'],
+    ]);
+
+    $options = Options::forProvider(new NativeEnumProvider(StringEnum::class))
+        ->except(StringEnum::Sam, StringEnum::Frodo)
+        ->toArray();
+
+    expect($options)->toEqual([
+        ['label' => 'Merry', 'value' => 'merry'],
+        ['label' => 'Pippin', 'value' => 'pippin'],
+    ]);
+});

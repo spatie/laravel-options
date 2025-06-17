@@ -7,6 +7,8 @@ use Spatie\LaravelOptions\SelectOption;
 
 /**
  * @template TValue
+ *
+ * @implements Provider<TValue>
  */
 abstract class EnumProvider implements Provider
 {

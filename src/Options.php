@@ -20,6 +20,7 @@ use MyCLabs\Enum\Enum as MyclabsEnum;
 use Spatie\Enum\Enum as SpatieEnum;
 use Spatie\LaravelOptions\Providers\ArrayProvider;
 use Spatie\LaravelOptions\Providers\AsyncModelProvider;
+use Spatie\LaravelOptions\Providers\EqualityCheckingProvider;
 use Spatie\LaravelOptions\Providers\EmptyProvider;
 use Spatie\LaravelOptions\Providers\ModelProvider;
 use Spatie\LaravelOptions\Providers\MyClabsEnumProvider;
@@ -39,7 +40,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, Iter
 
     protected ?bool $nullable = null;
 
-    protected ?Closure $reject = null;
+    protected ?Closure $rejects = null;
 
     protected ?Closure $filter = null;
 
@@ -50,6 +51,10 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, Iter
     protected mixed $nullableValue = null;
 
     protected array $pushedOptions = [];
+
+    protected array $onlyOptions = [];
+
+    protected array $exceptOptions = [];
 
     public static function forProvider(Provider $provider): self
     {
@@ -122,7 +127,7 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, Iter
 
     public function reject(Closure $reject): static
     {
-        $this->reject = $reject;
+        $this->rejects = $reject;
 
         return $this;
     }
@@ -155,12 +160,25 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, Iter
         return $this;
     }
 
+    public function only(mixed ...$only): self
+    {
+        array_push($this->onlyOptions, ...$only);
+
+        return $this;
+    }
+
+    public function except(mixed ...$except): self
+    {
+        array_push($this->exceptOptions, ...$except);
+
+        return $this;
+    }
+
     public function nullable(
         string $label = '-',
         bool $nullable = true,
         mixed $value = null,
-    ): self
-    {
+    ): self {
         $this->nullableLabel = $label;
         $this->nullableValue = $value;
         $this->nullable = $nullable;
@@ -219,10 +237,28 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, Iter
     ): Collection {
         return $this->provider
             ->provide()
-            ->when($this->filter instanceof Closure, fn(Collection $collection) => $collection->filter($this->filter))
-            ->when($this->reject instanceof Closure, fn(Collection $collection) => $collection->reject($this->reject))
-            ->when($this->sort instanceof Closure, fn(Collection $collection) => $collection->sortBy($this->sort))
-            ->when($this->unique instanceof Closure, fn(Collection $collection) => $collection->unique($this->sort))
+            ->when($this->filter instanceof Closure, fn (Collection $collection) => $collection->filter($this->filter))
+            ->when($this->rejects instanceof Closure, fn (Collection $collection) => $collection->reject($this->rejects))
+            ->when(! empty($this->onlyOptions), fn (Collection $collection) => $collection->filter(function ($option) {
+                foreach ($this->onlyOptions as $onlyOption) {
+                    if ($this->provider->equals($option, $onlyOption)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }))
+            ->when(! empty($this->exceptOptions), fn (Collection $collection) => $collection->reject(function ($option) {
+                foreach ($this->exceptOptions as $exceptOption) {
+                    if ($this->provider->equals($option, $exceptOption)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }))
+            ->when($this->sort instanceof Closure, fn (Collection $collection) => $collection->sortBy($this->sort))
+            ->when($this->unique instanceof Closure, fn (Collection $collection) => $collection->unique($this->sort))
             ->map(function (mixed $item) {
                 $option = $item instanceof Selectable
                     ? $item->toSelectOption()
@@ -238,17 +274,17 @@ class Options implements Arrayable, Jsonable, JsonSerializable, Stringable, Iter
 
                 return $option;
             })
-            ->when($this->unique === true, fn(Collection $collection) => $collection->unique(
-                fn(SelectOption $option) => $option->value
+            ->when($this->unique === true, fn (Collection $collection) => $collection->unique(
+                fn (SelectOption $option) => $option->value
             ))
             ->push(...$this->pushedOptions)
-            ->when($this->sort === true, fn(Collection $collection) => $collection->sortBy(
-                fn(SelectOption $option) => $option->label
+            ->when($this->sort === true, fn (Collection $collection) => $collection->sortBy(
+                fn (SelectOption $option) => $option->label
             ))
             ->values()
             ->when(
                 $this->nullable === true && $enableNullOption,
-                fn(Collection $collection) => $collection->prepend(new SelectOption(
+                fn (Collection $collection) => $collection->prepend(new SelectOption(
                     $this->nullableLabel,
                     $this->nullableValue
                 ))

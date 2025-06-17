@@ -119,3 +119,25 @@ it('can use a closure as value', function () {
         ['label' => 'Frodo', 'value' => md5(Character::first()->name)],
     ]);
 });
+
+
+it('can use only and except on model options', function () {
+    $options = Options::forProvider(new ModelProvider(Character::query()))
+        ->only(...Character::query()->whereIn('name', ['Frodo', 'Sam'])->get())
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Frodo', 'value' => 1],
+        ['label' => 'Sam', 'value' => 2],
+    ]);
+
+    $options = Options::forProvider(new ModelProvider(Character::query()))
+        ->except(...Character::query()->whereIn('name', ['Frodo', 'Sam'])->get())
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Merry', 'value' => 3],
+        ['label' => 'Pippin', 'value' => 4],
+        ['label' => 'Aragon', 'value' => 5],
+    ]);
+});

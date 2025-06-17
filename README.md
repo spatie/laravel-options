@@ -173,6 +173,36 @@ Which will create this options array:
 ]
 ```
 
+Depending on the type of options you're creating it is possible to call `only` on them to only include specific options:
+
+```php
+Options::forEnum(Hobbit::class)->only(Hobbit::Frodo, Hobbit::Sam);
+```
+
+This will result in the following options array:
+
+```php
+[
+    ['label' => 'Frodo', 'value' => 'frodo'],
+    ['label' => 'Sam', 'value' => 'sam'],
+]
+```
+
+The same can be done with `except` to exclude specific options:
+
+```php
+Options::forEnum(Hobbit::class)->except(Hobbit::Frodo, Hobbit::Sam);
+```
+
+This will result in the following options array:
+
+```php
+[
+    ['label' => 'Merry', 'value' => 'merry'],
+    ['label' => 'Pippin', 'value' => 'pippin'],
+]
+```
+
 A unique `null` option can be added as such:
 
 ```php
@@ -283,6 +313,14 @@ Or use a closure to resolve the label for the enum:
 Options::forEnum(Hobbit::class, fn(Hobbit $hobbit) => $hobbit->name. ' from the shire'));
 ```
 
+It is possible to filter or reject options using the `only` and `except` methods as such:
+
+```php
+Options::forEnum(Hobbit::class)->only(Hobbit::Frodo, Hobbit::Sam);
+
+Options::forEnum(Hobbit::class)->except(Hobbit::Frodo, Hobbit::Sam);
+```
+
 ### With models
 
 You can create options for Laravel models like this:
@@ -333,6 +371,14 @@ Or you can use a closure to resolve the label:
 
 ```php
 Options::forModels(Wizard::class, label: fn(Wizard $wizard) => $wizard->getName());
+```
+
+It is possible to filter or reject options using the `only` and `except` methods as such:
+
+```php
+Options::forModels(Wizard::class)->only(Wizard::where('name', 'gandalf')->first());
+
+Options::forModels(Wizard::class)->except(Wizard::where('name', 'gandalf')->first());
 ```
 
 ### With Select Options
@@ -447,6 +493,14 @@ Or use a closure to resolve the label for the state:
 Options::forStates(RingState::class, label: fn(RingState $state) => $state->label());
 ```
 
+It is possible to filter or reject options using the `only` and `except` methods as such:
+
+```php
+Options::forStates(RingState::class)->only(LostRingState::class, DestroyedRingState::class);
+
+Options::forStates(RingState::class)->except(LostRingState::class, DestroyedRingState::class);
+```
+
 ### With Arrays
 
 You can create a set of options from an associative array:
@@ -470,6 +524,14 @@ Options::forArray([
 ```
 
 In this case, the labels and values will be equal.
+
+It is possible to filter or reject options using the `only` and `except` methods as such using the keys of the array:
+
+```php
+Options::forArray($options)->only('gondor', 'rohan');
+
+Options::forArray($options)->except('gondor', 'rohan');
+```
 
 ### Without anything
 

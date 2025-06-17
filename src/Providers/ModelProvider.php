@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
+use PhpParser\Node\Expr\AssignOp\Mod;
 use Spatie\LaravelOptions\SelectOption;
 
 /**
@@ -16,7 +17,7 @@ use Spatie\LaravelOptions\SelectOption;
 class ModelProvider implements Provider
 {
     /**
-     * @param class-string<Model>|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Relations\Relation|array $models
+     * @param class-string<Model>|Model|EloquentBuilder|EloquentCollection|Collection|Relation|array $models
      */
     public function __construct(
         protected readonly string|Model|EloquentBuilder|EloquentCollection|Collection|Relation|array $models,
@@ -52,5 +53,15 @@ class ModelProvider implements Provider
         };
 
         return new SelectOption($label, $value);
+    }
+
+
+    /**
+     * @param Model $provided
+     * @param Model $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return $provided->is($userDefined);
     }
 }

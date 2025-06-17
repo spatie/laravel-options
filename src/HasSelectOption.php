@@ -2,7 +2,9 @@
 
 namespace Spatie\LaravelOptions;
 
-/** @mixin \Illuminate\Database\Eloquent\Model */
+use Illuminate\Database\Eloquent\Model;
+
+/** @mixin Model */
 trait HasSelectOption
 {
     /**

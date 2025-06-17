@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Spatie\LaravelOptions\SelectOption;
 use Spatie\ModelStates\State;
+use TypeError;
 
 /**
- * @implements Provider<\Spatie\ModelStates\State>
+ * @implements Provider<State>
  */
 class SpatieStateProvider implements Provider
 {
     /**
-     * @param class-string<\Spatie\ModelStates\State>|array<\Spatie\ModelStates\State>|\Illuminate\Support\Collection<\Spatie\ModelStates\State> $states
+     * @param class-string<State>|array<State>|Collection<State> $states
      */
     public function __construct(
         protected readonly string|array|Collection $states,
@@ -29,12 +30,13 @@ class SpatieStateProvider implements Provider
             is_string($this->states) && is_subclass_of($this->states, State::class) => $this->states::all(),
             is_array($this->states) => collect($this->states),
             $this->states instanceof Collection => $this->states,
+            default => throw new TypeError('Unknown select options type')
         };
 
         return collect($states)->map(
             fn (State|string $state) => $state instanceof State
-            ? $state
-            : $this->resolveState($state)
+                ? $state
+                : $this->resolveState($state)
         );
     }
 
@@ -56,5 +58,18 @@ class SpatieStateProvider implements Provider
         };
 
         return new $class($model);
+    }
+
+    /**
+     * @param State $provided
+     * @param State|string $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        if($userDefined instanceof State) {
+            return $provided->equals($userDefined);
+        }
+
+        return $provided::class === $userDefined;
     }
 }

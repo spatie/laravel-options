@@ -13,8 +13,8 @@ interface Provider
     /** @return Collection<TValue> */
     public function provide(): Collection;
 
-    /**
-     * @param TValue $item
-     */
+    /** @param TValue $item */
     public function map(mixed $item): SelectOption;
+
+    public function equals(mixed $provided, mixed $userDefined): bool;
 }

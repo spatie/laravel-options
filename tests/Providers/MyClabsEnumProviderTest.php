@@ -26,3 +26,23 @@ it('will humanize a myclabs enum label by default', function () {
         ['label' => 'Pippin', 'value' => 'pippin'],
     ]);
 });
+
+it('can use only and except on a myclabs enum options', function () {
+    $options = Options::forProvider(new MyClabsEnumProvider(MyClabsEnum::class))
+        ->only(MyClabsEnum::Frodo, MyClabsEnum::Sam)
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Frodo', 'value' => 'frodo'],
+        ['label' => 'Sam', 'value' => 'sam'],
+    ]);
+
+    $options = Options::forProvider(new MyClabsEnumProvider(MyClabsEnum::class))
+        ->except(MyClabsEnum::Frodo, MyClabsEnum::Sam)
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Merry', 'value' => 'merry'],
+        ['label' => 'Pippin', 'value' => 'pippin'],
+    ]);
+});

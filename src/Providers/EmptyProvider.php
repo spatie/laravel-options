@@ -19,4 +19,9 @@ class EmptyProvider implements Provider
     {
         return $item;
     }
+
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return true;
+    }
 }

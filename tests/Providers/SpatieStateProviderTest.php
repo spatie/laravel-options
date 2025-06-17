@@ -59,3 +59,24 @@ it('can create options from a spatie state using a closure', function () {
         ['label' => 'Sam', 'value' => SamState::getMorphClass()],
     ]);
 });
+
+it('can use only and except on spatie states', function () {
+    $options = Options::forProvider(new SpatieStateProvider(SpatieState::class))
+        ->only(FrodoState::class, SamState::class)
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'Frodo', 'value' => FrodoState::getMorphClass()],
+        ['label' => 'Sam', 'value' => SamState::getMorphClass()],
+    ]);
+
+    $options = Options::forProvider(new SpatieStateProvider(SpatieState::class))
+        ->except(FrodoState::class, SamState::class)
+        ->toArray();
+
+    expect($options)->toBeArray()->toBe([
+        ['label' => 'aragon', 'value' => 'aragon'],
+        ['label' => MerryState::getMorphClass(), 'value' => MerryState::getMorphClass()],
+        ['label' => PippinState::getMorphClass(), 'value' => PippinState::getMorphClass()],
+    ]);
+});

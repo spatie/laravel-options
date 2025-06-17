@@ -4,10 +4,11 @@ namespace Spatie\LaravelOptions\Providers;
 
 use Closure;
 use Illuminate\Support\Collection;
+use Spatie\Enum\Enum;
 use Spatie\LaravelOptions\SelectOption;
 
 /**
- * @extends  EnumProvider<\Spatie\Enum\Enum>
+ * @extends  EnumProvider<Enum>
  */
 class SpatieEnumProvider extends EnumProvider
 {
@@ -36,5 +37,14 @@ class SpatieEnumProvider extends EnumProvider
     protected function mapDefaultLabel(mixed $item): string
     {
         return $item->label;
+    }
+
+    /**
+     * @param Enum $provided
+     * @param Enum $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return $provided->value === $userDefined->value && $provided::class === $userDefined::class;
     }
 }

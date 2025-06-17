@@ -4,9 +4,10 @@ namespace Spatie\LaravelOptions\Providers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MyCLabs\Enum\Enum;
 
 /**
- * @extends \Spatie\LaravelOptions\Providers\EnumProvider<\MyCLabs\Enum\Enum>
+ * @extends EnumProvider<Enum>
  */
 class MyClabsEnumProvider extends EnumProvider
 {
@@ -23,5 +24,14 @@ class MyClabsEnumProvider extends EnumProvider
     protected function mapDefaultLabel(mixed $item): string
     {
         return Str::of($item->getKey())->replace('_', ' ')->lower()->ucfirst();
+    }
+
+    /**
+     * @param Enum $provided
+     * @param string $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return $provided->getValue()  === $userDefined;
     }
 }

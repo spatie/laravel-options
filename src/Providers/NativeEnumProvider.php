@@ -6,7 +6,7 @@ use BackedEnum;
 use Illuminate\Support\Collection;
 
 /**
- * @extends  EnumProvider<BackedEnum>
+ * @extends EnumProvider<BackedEnum>
  */
 class NativeEnumProvider extends EnumProvider
 {
@@ -23,5 +23,14 @@ class NativeEnumProvider extends EnumProvider
     protected function mapDefaultLabel(mixed $item): string
     {
         return $item->name;
+    }
+
+    /**
+     * @param BackedEnum $provided
+     * @param BackedEnum $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return $provided->value === $userDefined->value && $provided::class === $userDefined::class;
     }
 }

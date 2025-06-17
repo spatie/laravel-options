@@ -36,4 +36,14 @@ class ArrayProvider implements Provider
 
         return new SelectOption($label, $value);
     }
+
+    /**
+     * @param array $provided
+     * @param string|int $userDefined
+     */
+    public function equals(mixed $provided, mixed $userDefined): bool
+    {
+        return array_key_exists(config('options.value_key'), $provided)
+            && $provided[config('options.value_key')] === $userDefined;
+    }
 }
