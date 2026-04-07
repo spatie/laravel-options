@@ -2,6 +2,14 @@
 
 All notable changes to `options` will be documented in this file.
 
+## 1.3.0 - 2026-04-07
+
+### What's Changed
+
+* Add Laravel 13 support by @evan-burrell in https://github.com/spatie/laravel-options/pull/19
+
+**Full Changelog**: https://github.com/spatie/laravel-options/compare/1.2.0...1.3.0
+
 ## 1.2.0 - 2025-06-17
 
 - Some cleanup of the code
